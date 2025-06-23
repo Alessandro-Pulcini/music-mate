@@ -1,18 +1,13 @@
-import { StrictMode } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
+import App from "./App";
 import "./index.css";
-import "swiper/swiper-bundle.css";
-import "flatpickr/dist/flatpickr.css";
-import App from "../src/App.tsx";
-import { AppWrapper } from "./components/common/PageMeta.tsx";
-import { ThemeProvider } from "./context/ThemeContext.tsx";
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <ThemeProvider>
-      <AppWrapper>
-        <App />
-      </AppWrapper>
-    </ThemeProvider>
-  </StrictMode>
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>
 );
