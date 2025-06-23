@@ -1,49 +1,44 @@
+// src/components/SpotifyReleases.tsx
 import { useEffect, useState } from "react";
 import { getNewReleases } from "../services/spotify";
 
-interface Album {
-  id: string;
-  name: string;
-  images: { url: string }[];
-  artists: { name: string }[];
-}
-
-export default function SpotifyReleases() {
-  const [albums, setAlbums] = useState<Album[]>([]);
+const SpotifyReleases = () => {
+  const [albums, setAlbums] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getNewReleases()
-      .then(setAlbums)
+    const token = localStorage.getItem("spotify_access_token");
+    if (!token) return;
+
+    getNewReleases(token)
+      .then((data) => {
+        setAlbums(data.albums.items);
+      })
+      .catch((error) => {
+        console.error("Errore caricamento dati Spotify", error);
+      })
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-48">
-        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
-  }
+  if (loading) return <p>Caricamento...</p>;
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
       {albums.map((album) => (
-        <div
-          key={album.id}
-          className="bg-white shadow-md rounded p-2 text-center"
-        >
+        <div key={album.id} className="bg-white p-4 rounded shadow">
           <img
-            src={album.images[0].url}
+            src={album.images[0]?.url}
             alt={album.name}
-            className="rounded mb-2"
+            className="rounded"
           />
-          <h3 className="text-sm font-semibold">{album.name}</h3>
-          <p className="text-xs text-gray-600">
-            {album.artists.map((a) => a.name).join(", ")}
+          <h3 className="mt-2 font-semibold">{album.name}</h3>
+          <p className="text-sm">
+            {album.artists.map((a: { name: string }) => a.name).join(", ")}
           </p>
         </div>
       ))}
     </div>
   );
-}
+};
+
+export default SpotifyReleases;

@@ -1,25 +1,19 @@
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Spotify from "./pages/Spotify";
 import About from "./pages/About";
+import SpotifyPage from "./pages/Spotify";
+import Callback from "./pages/Callback";
 
 function App() {
   return (
-    <div className="flex flex-col h-screen">
-      <Navbar />
-      <div className="flex flex-1">
-        <Sidebar />
-        <main className="flex-1 bg-gray-100 overflow-auto">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/spotify" element={<Spotify />} />
-            <Route path="/about" element={<About />} />
-          </Routes>
-        </main>
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/spotify" element={<SpotifyPage />} />
+        <Route path="/callback" element={<Callback />} />
+      </Routes>
+    </Router>
   );
 }
 
